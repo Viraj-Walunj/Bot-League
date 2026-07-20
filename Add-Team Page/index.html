@@ -46,14 +46,6 @@
   <svg class="star-outline pointer-events-none absolute right-[10%] bottom-[8%] h-16 w-16" viewBox="0 0 51 49"><path d="M25.5 0l6.2 18.1H51L35.9 29.3l6.2 18.1L25.5 36.2 9.9 47.4l6.2-18.1L1 18.1h19.3z"/></svg>
   <svg class="star-outline pointer-events-none absolute left-[52%] top-[10%] h-10 w-10" viewBox="0 0 51 49"><path d="M25.5 0l6.2 18.1H51L35.9 29.3l6.2 18.1L25.5 36.2 9.9 47.4l6.2-18.1L1 18.1h19.3z"/></svg>
 
-  <!--
-    NOTE for whoever integrates this: navbar (82px tall, black) and sidebar
-    (100px wide, left-fixed) are intentionally NOT included here — senior
-    is wiring those in separately across all pages. The padding below
-    (pt-24 ≈ 96px, pl-40 ≈ 161px) reserves the exact space those two
-    elements will occupy in the Figma spec, so content lands in the right
-    place once they're added back in.
-  -->
   <main class="relative z-10 min-h-screen w-full pb-16 pl-6 pr-6 pt-16 sm:pl-10 sm:pt-20 lg:pl-[261px] lg:pt-[189px] lg:pr-16">
 
     <!-- Decorative plane image -->
@@ -161,8 +153,6 @@
   </main>
 
   <script>
-    // ── Presentational-only handlers. No backend wiring — hook these
-    // up to your real team-creation flow when converting to React. ──
 
     document.getElementById("createTeamBtn").addEventListener("click", () => {
       // TODO: navigate to /create-team
