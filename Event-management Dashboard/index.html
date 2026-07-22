@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bot League - Event Management Dashboard</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarpanch:wght@600&family=Poppins:wght@500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+
+<style>
+  body { font-family: 'Inter', sans-serif; background: #FFFFFF; }
+  .font-sarpanch { font-family: 'Sarpanch', sans-serif; }
+  .font-poppins { font-family: 'Poppins', sans-serif; }
+  .font-grotesk { font-family: 'Space Grotesk', sans-serif; }
+
+  .band-diag {
+    background: linear-gradient(90deg, rgba(1, 98, 209, 0.15) 0%, rgba(140, 108, 255, 0.15) 100%);
+    opacity: 0.35;
+  }
+  .band-vert {
+    background: linear-gradient(180deg, rgba(1, 98, 209, 0.15) 0%, rgba(140, 108, 255, 0.15) 100%);
+  }
+  .band-vert-faint {
+    background: linear-gradient(180deg, rgba(1, 98, 209, 0.15) 0%, rgba(140, 108, 255, 0.15) 100%);
+    opacity: 0.35;
+  }
+
+  .star-outline {
+    fill: none;
+    stroke: url(#starGradient);
+    stroke-width: 2;
+    opacity: 0.15;
+  }
+
+  .stat-card {
+    box-shadow: inset 0 0 10px 1px rgba(255, 26, 26, 0.10);
+  }
+</style>
+</head>
+
+<body class="relative min-h-screen overflow-x-auto bg-white">
+
+     <div class="absolute top-0 left-0 -z-10 w-full hidden lg:flex max-w-[1560px] h-auto mx-auto justify-center pointer-events-none">
+    <img class="w-full h-auto object-cover" src="images/Toplines-image.svg" alt="bg-lines">
+  </div>
+
+  <svg width="0" height="0" class="absolute">
+    <defs>
+      <linearGradient id="starGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0162D1"/>
+        <stop offset="100%" stop-color="#8C6CFF"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <main class="relative z-10 w-full mt-20 pb-24 pl-6 pr-6 pt-10 sm:pl-10 lg:pl-[301px] lg:pr-16 lg:pt-[72px]">
+
+    <!-- Decorative stars -->
+    <!-- <svg class="star-outline pointer-events-none absolute left-[6%] top-[6%] h-28 w-28" viewBox="0 0 51 49"><path d="M25.5 0l6.2 18.1H51L35.9 29.3l6.2 18.1L25.5 36.2 9.9 47.4l6.2-18.1L1 18.1h19.3z"/></svg> -->
+     <img 
+        src="images/Star-image.svg" 
+        alt="" 
+        class="pointer-events-none absolute left-[7%] top-[9%] h-[155.23px] w-[148.95px] object-contain"
+        />
+
+    <!--Pending decision banner-->
+    <div class="relative z-10 flex flex-col gap-4 rounded-xl bg-gradient-to-r from-[#0162D1]/[0.55] to-[#8C6CFF]/[0.55] px-[25px] sm:flex-row sm:items-center sm:justify-between w-full lg:w-[1045px] h-auto lg:h-[81px]">
+      <span class="font-poppins text-[20px] font-medium text-black leading-[20px]">Lorem ipsum Lorem ipsum</span>
+      <div class="flex items-center gap-[16px]">
+        <button id="declineBtn" class="flex items-center justify-center w-[124px] h-[36px] rounded-lg border border-white font-poppins text-[18px] font-medium text-white transition hover:bg-white/10">
+          Decline
+        </button>
+        <button id="acceptBtn" class="flex items-center justify-center w-[124px] h-[36px] rounded-lg bg-white font-poppins text-[18px] font-medium text-[#0162D1] transition hover:bg-blue-50">
+          Accept
+        </button>
+      </div>
+    </div>
+
+    <!-- Event header row -->
+    <div class="relative z-10 mt-9 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between w-full lg:w-[1045px]">
+      <div class="flex items-center gap-[46px]">
+        <h1 class="font-sarpanch text-[50px] font-semibold text-[#0162D1] leading-[50px] ">Event 1</h1>
+        <span class="flex items-center justify-center gap-[6px] rounded-[30px] border-2 border-[#00D31C] w-[114px] h-[31px] p-[6px] font-poppins text-[16px] font-medium text-[#00D31C] sm:text-[16px] mt-[3px]">
+          Published
+        </span>
+      </div>
+
+      <div class="flex items-center gap-[11px] mt-1">
+        <button id="editBtn" class="pt-3 flex items-center justify-center gap-[6px] rounded-[10px] border border-[#0162D1] w-[87px] h-[38px] px-[10px] py-[8px] font-poppins text-[15px] font-medium text-[#8C6CFF] shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:bg-blue-50 sm:text-[18px]">
+        <img 
+        src="images/Pencil-image.svg" 
+        alt="Edit" 
+        class="h-[14px] w-[14px] object-contain"
+        >
+      <path d="M9.13501 1.6333C9.28911 1.4792 9.47201 1.35694 9.67331 1.27352C9.87461 1.19011 10.0904 1.14717 10.3083 1.14717C10.5263 1.14717 10.742 1.19011 10.9433 1.27352C11.1446 1.35694 11.3275 1.4792 11.4816 1.6333C11.6357 1.7874 11.758 1.9703 11.8414 2.1716C11.9248 2.3729 11.9677 2.58864 11.9677 2.80663C11.9677 3.02463 11.9248 3.24037 11.8414 3.44167C11.758 3.64297 11.6357 3.82587 11.4816 3.97997L4.13001 11.3316L1.14168 12.1475L1.95751 9.15913L9.13501 1.6333Z" fill="url(#editIconGradient)" />
+      <defs>
+        <linearGradient id="editIconGradient" x1="6.55468" y1="1.14717" x2="6.55468" y2="12.1475" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#0162D1"/>
+          <stop offset="1" stop-color="#8C6CFF"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    Edit
+  </button>
+        <button id="archiveBtn" class="flex items-center justify-center gap-[6px] rounded-[10px] border border-[#8C6CFF] w-[106px] h-[38px] px-[10px] py-[8px] font-poppins text-[18px] font-medium shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:bg-purple-50 ">
+         <span class="bg-gradient-to-r from-[#0162D1] to-[#8C6CFF] bg-clip-text text-transparent pt-1">
+        Archive
+        </span>
+        </button>
+        <button id="startEventBtn" class="flex items-center justify-center gap-[10px]  rounded-[10px] bg-gradient-to-r from-[#0162D1]/[0.75] to-[#8C6CFF]/[0.75] w-[130px] h-[38px] px-[10px] py-[8px] font-poppins text-[18px] font-medium text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:brightness-110">
+          Start Event
+        </button>
+      </div>
+    </div>
+
+    <!-- Description  -->
+    <p class="relative z-10 mt-6 max-w-[802px] text-[16px] leading-relaxed text-black/[0.62] sm:text-[18px]">
+      Sumo_wars - A battle of engineering and strategy where robots face off in a circular arena to become the ultimate Sumo Champion.
+    </p>
+
+    <!-- Stat cards  -->
+    <div class="relative z-10 mt-8 flex flex-row gap-[23.5px] w-full lg:w-[1045px]" id="statCardsRow"></div>
+
+    <!--  Event Details -->
+    <h2 class="font-poppins relative z-10 mt-10 text-[20px] font-semibold uppercase text-[#0162D1] sm:text-[22px]">
+      Event Details
+    </h2>
+    <div class="band-vert relative z-10 mt-[6px] w-full lg:w-[1045px] h-auto lg:h-[209px] rounded-[15px] overflow-hidden border-[2px] border-[#0162D1] pt-4 pl-[23px] pr-[5px]" id="eventDetailsCard"></div>
+
+    <!-- Sports  -->
+    <h2 class="font-poppins relative z-10 mt-5 text-[20px] font-semibold uppercase text-[#0162D1] sm:text-[22px]">
+      Sports
+    </h2>
+    <div class="band-vert relative z-10 mt-[5px] w-full lg:w-[1045px] h-auto lg:h-[623px] rounded-[15px] overflow-hidden border-[2px] border-[#0162D1] p-5 sm:p-9">
+      <div class="flex justify-end">
+        <button id="addSportBtn" class="-mt-5 mb-2 flex items-center justify-center gap-[3px] rounded-[5px] bg-gradient-to-r from-[#0162D1]/[0.75] to-[#8C6CFF]/[0.75] w-[115px] h-[32px] px-[10px] py-[8px] font-poppins text-[14px] font-medium text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:brightness-110">
+          <span class="text-lg leading-none">+</span> Add sport
+        </button>
+      </div>
+
+      <div id="sportsList" class="mt-4 flex flex-col gap-2"></div>
+    </div>
+
+    <!--  Arena Sponsors  -->
+    <h2 class="font-poppins relative z-10 mt-4 text-[20px] font-semibold uppercase text-[#0162D1] sm:text-[22px]">
+      Arena Sponsors
+    </h2>
+    <div class="band-vert relative z-10 mt-2 flex min-h-[189px] lg:w-[1045px] items-start justify-end rounded-[15px] border-2 border-[#0162D1] p-3">
+      <button id="addArenaSponsorBtn" class="flex items-center gap-1.5 rounded-[5px] bg-gradient-to-r from-[#0162D1]/[0.75] to-[#8C6CFF]/[0.75]  w-[138px] h-[32px] px-[10px] py-[8px] font-poppins text-[14px] font-medium text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:brightness-110">
+        <span class="text-lg leading-none">+</span> Add sponsor
+      </button>
+    </div>
+
+    <!--  Event Sponsors  -->
+    <h2 class="font-poppins relative z-10 mt-4 text-[20px] font-semibold uppercase text-[#0162D1] sm:text-[22px]">
+      Event Sponsors
+    </h2>
+    <div class="band-vert relative z-10 mt-2 flex min-h-[189px] lg:w-[1045px] items-start justify-end rounded-[15px] border-2 border-[#0162D1] p-3">
+      <button id="addEventSponsorBtn" class="flex items-center gap-1.5 rounded-[5px] bg-gradient-to-r from-[#0162D1]/[0.75] to-[#8C6CFF]/[0.75] w-[138px] h-[32px] px-[10px] py-[8px] font-poppins text-[14px] font-medium text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:brightness-110">
+        <span class="text-lg leading-none">+</span> Add sponsor
+      </button>
+    </div>
+
+    <img
+      src="images/Plane-image.svg"
+      alt=""
+      class="pointer-events-none absolute left-[68px] top-[960px] hidden w-[180px] h-auto -rotate-[5deg] opacity-100 lg:block"
+    />
+    <img
+      src="images/Drone-image.svg"
+      alt=""
+      class="pointer-events-none absolute right-[-50px] top-[610px] hidden w-[250px] rotate-[3deg] opacity-100 lg:block"
+    />
+    <div class="absolute bottom-[435px] left-0 -z-10 w-full hidden lg:flex max-w-[1509px] h-auto mx-auto justify-center pointer-events-none">
+    <img class="w-full h-auto object-cover" src="images/Bottomlines-image.svg" alt="Bottomlines">
+  </div>
+
+  </main>
+
+  <script>
+    const mockStats = [
+      { label: "Sports", value: "1", iconType: "robot" },
+      { label: "Registrations", value: "120", iconType: "doc" },
+      { label: "Venue", value: "Pune", iconType: "chart" },
+      { label: "User Control", value: null, iconType: "chart2" },
+    ];
+
+    const mockEventDetails = [
+      { label: "Organization", value: "BOTMAKERS" },
+      { label: "City", value: "PUNE" },
+      { label: "State", value: "MAHARASHTRA" },
+      { label: "Venue", value: "PUNE" },
+      { label: "Country", value: "INDIA" },
+    ];
+
+    const mockSports = [
+      {
+        name: "Robo Soccer",
+        category: "Young Engineers",
+        weight: "3 kg",
+        format: "Round Robin",
+        teams: 5,
+        players: 4,
+        entryFee: 1000,
+        prizePool: 100000,
+        startDate: "10th Jul",
+        endDate: "1st Aug",
+        status: "Registration Open",
+      },
+      {
+        name: "Robo Soccer",
+        category: "Young Engineers",
+        weight: "3 kg",
+        format: "Round Robin",
+        teams: 5,
+        players: 4,
+        entryFee: 1000,
+        prizePool: 100000,
+        startDate: "10th Jul",
+        endDate: "1st Aug",
+        status: "Registration Open",
+      },
+    ];
+
+    const ICONS = {
+      robot: `<img src="images/robot-image.svg" alt="Robot Icon" class="w-[31px] h-[29px] object-contain flex-none">`,
+      doc: `<img src="images/doc-image.svg" alt="Doc Icon" class="w-[31px] h-[29px] object-contain flex-none">`,
+      chart: `<img src="images/chart-image.svg" alt="Chart Icon" class="w-[31px] h-[29px] object-contain flex-none">`,
+      chart2: `<img src="images/chart2-image.svg" alt="Chart Icon" class="w-[31px] h-[29px] object-contain flex-none">`,
+    };
+
+    function renderStatCards() {
+      const container = document.getElementById("statCardsRow");
+      container.innerHTML = mockStats.map(stat => {
+        const labelSize = (stat.label === "Registrations") ? "text-[14px]" : "text-[16px]";
+        const labelWeight = (stat.label === "User Control") ? "font-bold" : "font-medium";
+        return `
+        <div class="stat-card flex items-center gap-4 rounded-[12px] border border-[#0162D1] bg-white px-[20px] w-[243.5px] h-[100px] shrink-0">
+          <div class="flex h-[53px] w-[55px] shrink-0 items-center justify-center rounded-lg bg-[#0162D1]">
+            ${ICONS[stat.iconType]}
+          </div>
+          <div>
+            ${stat.value !== null
+              ? `<div class="pl-1 font-grotesk text-[32px] font-bold leading-[40px] text-black">${stat.value}</div>`
+              : ""
+            }
+            <div class="pl-1 pb-1 font-inter ${labelSize} ${labelWeight}  font-medium uppercase tracking-[1.2px] leading-[17px] text-black whitespace-nowrap ${stat.value === null ? 'pt-2' : ''}">${stat.label}</div>
+          </div>
+        </div>
+      `;}).join("");
+    }
+
+    function renderEventDetails() {
+      const container = document.getElementById("eventDetailsCard");
+      container.innerHTML = `
+        <div class="grid grid-cols-1 gap-x-0 sm:grid-cols-3">
+          ${mockEventDetails.map(field => `
+            <div class="flex flex-col gap-1">
+              <span class="font-poppins text-[16px] font-medium capitalize text-black sm:text-[18px]">${field.label}</span>
+              <div class="flex mb-3 h-[44px] w-[330.43px] items-center rounded-[8px] border border-[#8C6CFF] bg-white px-4 shadow-[0_4px_4px_rgba(0,0,0,0.25)] overflow-hidden">
+                <span class="text-[16px] font-medium capitalize text-black/75 sm:text-[18px]">${field.value}</span>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    // Sport card 
+    function renderSportCard(sport) {
+      return `
+        <div class="relative w-[968px] h-[239px] mt-4 bg-white rounded-[15px] border border-[#0162D1] shadow-[0_4px_4px_rgba(0,0,0,0.25)] overflow-hidden">
+
+          <!-- Title -->
+          <div class="absolute left-[32px] top-[33px] font-poppins text-[20px] font-semibold uppercase leading-[16px] text-[#0162D1]">
+            ${sport.name}
+          </div>
+
+          <!-- Meta row: category | weight | format -->
+          <div class="absolute left-[32px] top-[61px] text-[14px] font-medium capitalize leading-[16px] text-[#2B2B2B]">${sport.category}</div>
+          <div class="absolute left-[153px] top-[60px] h-[18px] w-px bg-[#2B2B2B]"></div>
+          <div class="absolute left-[162px] top-[62px] text-[14px] font-medium capitalize leading-[16px] text-[#2B2B2B]">${sport.weight}</div>
+          <div class="absolute left-[199px] top-[60px] h-[18px] w-px bg-[#2B2B2B]"></div>
+          <div class="absolute left-[213px] top-[62px] text-[14px] font-medium capitalize leading-[16px] text-[#2B2B2B]">${sport.format}</div>
+
+          <!-- Manage sport button -->
+          <button class="manage-sport-btn absolute left-[814px] top-[28px] flex h-[26px] w-[115px] items-center justify-center gap-[3px] rounded-[5px] bg-gradient-to-r from-[#0162D1]/[0.75] to-[#8C6CFF]/[0.75] font-poppins text-[12px] font-medium text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:brightness-110">
+            Manage sport
+          </button>
+
+          <!-- TEAMS -->
+          <div class="absolute left-[53px] top-[102px] h-[60px] w-[148px] overflow-hidden rounded-[8px] border border-[#0162D1]/[0.55]">
+            <img 
+            src="images/Teams-image.svg" 
+            alt="Teams Icon"
+            class="absolute left-[21px] top-[15px] h-[30px] w-[30px] rounded object-contain">
+            <span class="absolute left-[74px] top-[10px] text-[12px] font-medium capitalize leading-[16px] text-black/[0.49]">TEAMS</span>
+            <span class="absolute left-[87px] top-[29px] text-[20px] font-semibold capitalize leading-[16px] text-[#5E5E5E]">${sport.teams}</span>
+          </div>
+
+          <!-- PLAYERS -->
+          <div class="absolute left-[233px] top-[104px] h-[60px] w-[148px] overflow-hidden rounded-[8px] border border-[#0162D1]/[0.55]">
+            <img 
+            src="images/Players-image.svg" 
+            alt="Players Icon" 
+            class="absolute left-[24px] top-[15px] h-[30px] w-[30px] object-contain"
+            >
+            <span class="absolute left-[73px] top-[10px] text-[12px] font-medium capitalize leading-[16px] text-black/[0.49]">PLAYERS</span>
+            <span class="absolute left-[94px] top-[30px] text-[20px] font-semibold capitalize leading-[16px] text-[#5E5E5E]">${sport.players}</span>
+          </div>
+
+          <!-- ENTRY FEE (no icon, per spec) -->
+          <div class="absolute left-[413px] top-[106px] h-[60px] w-[148px] overflow-hidden rounded-[8px] border border-[#0162D1]/[0.55]">
+            <span class="absolute left-[40px] top-[7px] text-[12px] font-medium capitalize leading-[16px] text-black/[0.49]">ENTRY FEE</span>
+            <span class="absolute left-[46px] top-[28px] text-[20px] font-semibold capitalize leading-[16px] text-[#5E5E5E]">${sport.entryFee}</span>
+          </div>
+
+          <!-- 4th box -->
+          <div class="absolute left-[593px] top-[108px] h-[60px] w-[148px] overflow-hidden rounded-[8px] border border-[#0162D1]/[0.55]">
+            <span class="absolute left-[40px] top-[7px] text-[12px] font-medium capitalize leading-[16px] text-black/[0.49]">PRIZE POOL</span>
+            <span class="absolute left-[40px] top-[28px] text-[20px] font-semibold capitalize leading-[16px] text-[#5E5E5E]">${sport.prizePool}</span>
+          </div>
+
+          <!-- Date range -->
+          <img 
+            src="images/Calender-image.svg" 
+            alt="Calendar Icon" 
+            class="absolute left-[71px] top-[183px] h-[27px] w-[27px] object-contain"
+            >
+
+          <div class="absolute left-[107px] top-[190px] text-[20px] font-semibold capitalize leading-[16px] text-[#888989]">${sport.startDate}</div>
+          <svg class="absolute left-[199px] top-[192.5px] h-[11px] w-[18.9px]" viewBox="0 0 19 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 5.5H17.5M17.5 5.5L13 1M17.5 5.5L13 10" stroke="#888989" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          <div class="absolute left-[229px] top-[190px] text-[20px] font-semibold capitalize leading-[16px] text-[#888989]">${sport.endDate}</div>
+
+          <!-- Registration status pill -->
+          <span class="absolute left-[799px] top-[185px] flex h-[25px] w-[130px] items-center justify-center rounded-[20px] border border-[#5249EF] px-[8px] text-[12px] font-semibold capitalize leading-[16px] text-[#5249EF]">
+            ${sport.status}
+          </span>
+        </div>
+      `;
+    }
+
+    function renderSports() {
+      document.getElementById("sportsList").innerHTML = mockSports.map(renderSportCard).join("");
+    }
+
+    renderStatCards();
+    renderEventDetails();
+    renderSports();
+
+    const bindLog = (id, msg) => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener("click", () => console.log(msg));
+    };
+    bindLog("acceptBtn", "Accept clicked");
+    bindLog("declineBtn", "Decline clicked");
+    bindLog("editBtn", "Edit clicked");
+    bindLog("archiveBtn", "Archive clicked");
+    bindLog("startEventBtn", "Start Event clicked");
+    bindLog("addSportBtn", "Add sport clicked");
+    bindLog("addArenaSponsorBtn", "Add arena sponsor clicked");
+    bindLog("addEventSponsorBtn", "Add event sponsor clicked");
+
+    document.addEventListener("click", (e) => {
+      if (e.target.closest(".manage-sport-btn")) {
+        console.log("Manage sport clicked");
+      }
+    });
+  </script>
+
+</body>
+</html>
